@@ -1,0 +1,16 @@
+Section / Content,File,Line(s)
+Browser tab title,index.html,6
+Status pill (Currently building my journey.),index.html,153
+Hero name (NIHAR KADAM),index.html,163
+Hero headline (Exploring. Creating. Building My Journey.),index.html,169
+Hero intro paragraph,index.html,174
+Profile photo path (assets/profile.jpg),index.html,220
+Profile card bottom tags (Tech & Creativity / Learning & Building),index.html,231–235
+About heading & bio (even i dont know who i am and what i want),index.html,265–270
+Current Snapshot (i am preparing for jee),index.html,297
+Craft & Skills cards (Video Editing & Playing Games),index.html,318–341
+Work status (I AM UNEMPLOYED),index.html,359
+Gmail display text (niharkadam.0311@gmail.com),index.html,393
+Instagram URL & handle (nihar),index.html,400–409
+Footer tagline,index.html,425–426
+Copied email address & Quick Jump email hint,script.js,"100, 132"

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nihar Kadam — Exploring. Creating. Building My Journey.</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            obsidian: '#06070a',
+            charcoal: '#0c0e14',
+            surface: '#12151f',
+            electric: '#3b82f6',
+            cyanGlow: '#22d3ee',
+            violetGlow: '#8b5cf6',
+          },
+          animation: {
+            'float-slow': 'floatSlow 9s ease-in-out infinite',
+            'float-reverse': 'floatReverse 11s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+            'scroll-line': 'scrollLine 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite',
+          },
+          keyframes: {
+            floatSlow: {
+              '0%, 100%': { transform: 'translate3d(0, 0, 0) scale(1)' },
+              '50%': { transform: 'translate3d(18px, -22px, 0) scale(1.04)' },
+            },
+            floatReverse: {
+              '0%, 100%': { transform: 'translate3d(0, 0, 0) scale(1)' },
+              '50%': { transform: 'translate3d(-20px, 18px, 0) scale(0.96)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.45', transform: 'scale(1)' },
+              '50%': { opacity: '0.75', transform: 'scale(1.05)' },
+            },
+            scrollLine: {
+              '0%': { transform: 'translateY(-100%)', opacity: '0' },
+              '35%': { opacity: '1' },
+              '75%': { opacity: '1' },
+              '100%': { transform: 'translateY(115%)', opacity: '0' },
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="selection:bg-blue-500/30 selection:text-blue-100">
+
+  <!-- Interactive Cursor Spotlight -->
+  <div id="spotlight" class="cursor-spotlight fixed inset-0 z-30 transition-opacity duration-300"></div>
+
+  <!-- Ambient Animated Background -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="bg-grid-pattern absolute inset-0 opacity-70"></div>
+    <div class="absolute -top-40 -left-32 w-[520px] h-[520px] rounded-full bg-blue-600/15 blur-[130px] animate-float-slow"></div>
+    <div class="absolute top-1/3 -right-36 w-[480px] h-[480px] rounded-full bg-violet-600/15 blur-[140px] animate-float-reverse"></div>
+    <div class="absolute -bottom-48 left-1/3 w-[560px] h-[560px] rounded-full bg-cyan-500/10 blur-[150px] animate-pulse-glow"></div>
+  </div>
+
+  <!-- Top Navigation -->
+  <header id="navbar" class="fixed top-0 inset-x-0 z-40 transition-all duration-300 border-b border-transparent">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      <a href="#hero" class="group flex items-center gap-3 focus:outline-none">
+        <div class="relative w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500/20 to-violet-500/20 border border-white/15 flex items-center justify-center overflow-hidden group-hover:border-blue-400/50 transition-colors">
+          <span class="font-display font-bold text-sm tracking-tight text-white">03</span>
+          <span class="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></span>
+        </div>
+        <span class="hidden sm:inline-block font-display font-semibold text-sm tracking-wide text-slate-200 group-hover:text-white transition-colors">
+          Nihar Kadam
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-7 text-sm text-slate-400">
+        <a href="#about" class="fancy-link hover:text-white transition-colors py-1">About</a>
+        <a href="#craft" class="fancy-link hover:text-white transition-colors py-1">Craft</a>
+        <a href="#work" class="fancy-link hover:text-white transition-colors py-1">Work</a>
+        <a href="#connect" class="fancy-link hover:text-white transition-colors py-1">Connect</a>
+      </nav>
+
+      <!-- Utility Controls -->
+      <div class="flex items-center gap-2.5">
+        <button
+          id="sound-toggle"
+          type="button"
+          aria-label="Toggle subtle UI sound effects"
+          title="Toggle UI sound effects"
+          class="w-9 h-9 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-blue-400/40 flex items-center justify-center text-slate-400 hover:text-white transition-all"
+        >
+          <i data-lucide="volume-2" class="w-4 h-4" id="sound-icon-on"></i>
+          <i data-lucide="volume-x" class="w-4 h-4 hidden" id="sound-icon-off"></i>
+        </button>
+
+        <button
+          id="cmd-open-btn"
+          type="button"
+          class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-blue-400/40 text-xs font-mono text-slate-400 hover:text-white transition-all"
+        >
+          <i data-lucide="command" class="w-3.5 h-3.5 text-blue-400"></i>
+          <span>Quick Jump</span>
+          <kbd class="px-1.5 py-0.5 text-[10px] rounded bg-white/10 text-slate-300">K</kbd>
+        </button>
+
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-label="Open navigation menu"
+          class="md:hidden w-9 h-9 rounded-xl border border-white/10 bg-white/[0.03] flex items-center justify-center text-slate-300 hover:text-white"
+        >
+          <i data-lucide="menu" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#080a0f]/95 backdrop-blur-xl px-5 py-4 space-y-2">
+      <a href="#about" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-white/5 hover:text-white">About</a>
+      <a href="#craft" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-white/5 hover:text-white">Craft</a>
+      <a href="#work" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-white/5 hover:text-white">Work</a>
+      <a href="#connect" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-white/5 hover:text-white">Connect</a>
+    </div>
+  </header>
+
+  <main class="relative z-10">
+
+    <!-- 1. HERO SECTION -->
+    <section id="hero" class="relative min-h-screen flex flex-col justify-center pt-24 pb-16 px-5 sm:px-8">
+      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+
+        <!-- Left Column: Identity & Headline -->
+        <div class="lg:col-span-7 space-y-7">
+          <!-- Status Indicator -->
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-blue-400/25 bg-blue-500/[0.08] backdrop-blur-md">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-400"></span>
+            </span>
+            <span class="text-xs font-mono tracking-wide text-blue-200">Currently building my journey.</span>
+          </div>
+
+          <!-- Name with Subtle Gradient Aura Behind -->
+          <div class="relative">
+            <div aria-hidden="true" class="absolute -inset-x-8 -inset-y-4 bg-gradient-to-r from-blue-600/25 via-violet-600/20 to-cyan-500/15 blur-3xl rounded-full pointer-events-none"></div>
+            <p class="relative font-mono text-xs sm:text-sm uppercase tracking-[0.28em] text-blue-400 font-medium mb-3">
+              Personal Digital Identity
+            </p>
+            <h1 class="relative font-display text-4xl sm:text-6xl lg:text-[4.25rem] font-bold tracking-tight leading-[1.03] gradient-text">
+              NIHAR KADAM
+            </h1>
+          </div>
+
+          <!-- Main Headline -->
+          <h2 class="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-slate-100 leading-snug">
+            Exploring. Creating. <span class="accent-gradient-text">Building My Journey.</span>
+          </h2>
+
+          <!-- Short Introduction -->
+          <p class="text-base sm:text-lg text-slate-400 leading-relaxed max-w-2xl">
+            I AM NIHAR KADAM , I LOVE PLAYING GAMES AND CREATING VIDEOS WHICH I NEVER POST. <br>
+            I DONT KNOW WHAT TO WRITE IN THIS WEBSITE BCZ I HAVE NOT ACHIEVED ANYTHING YET. <br>
+            BTW WISH ME ON 03/11 
+         
+          </p>
+
+          <!-- Primary CTAs -->
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a
+              href="#about"
+              id="hero-explore-btn"
+              class="group relative inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-medium text-sm text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 shadow-[0_0_30px_-6px_rgba(59,130,246,0.55)] hover:shadow-[0_0_38px_-4px_rgba(139,92,246,0.65)] transition-all duration-300 active:scale-[0.98]"
+            >
+              <span>Explore My Journey</span>
+              <i data-lucide="arrow-down-right" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5"></i>
+            </a>
+
+            <a
+              href="#connect"
+              id="hero-connect-btn"
+              class="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-medium text-sm text-slate-200 border border-white/15 bg-white/[0.03] hover:bg-white/[0.08] hover:border-blue-400/45 transition-all duration-300 active:scale-[0.98]"
+            >
+              <span>Connect With Me</span>
+              <i data-lucide="send" class="w-4 h-4 text-blue-400 transition-transform duration-300 group-hover:translate-x-0.5"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Stylish Profile Image Placeholder -->
+        <div class="lg:col-span-5 flex justify-center lg:justify-end">
+          <div id="profile-card" class="profile-tilt relative w-full max-w-[360px] rounded-3xl p-[1px] bg-gradient-to-br from-blue-500/45 via-white/10 to-violet-500/45 shadow-2xl">
+            <div class="relative rounded-[23px] bg-[#0b0d14]/95 backdrop-blur-xl p-6 overflow-hidden">
+              <!-- Inner glow -->
+              <div class="absolute -top-16 -right-16 w-44 h-44 bg-blue-500/20 blur-3xl rounded-full pointer-events-none"></div>
+              <div class="absolute -bottom-16 -left-16 w-44 h-44 bg-violet-500/20 blur-3xl rounded-full pointer-events-none"></div>
+
+              <!-- Placeholder Frame Header -->
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-white/15"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-white/15"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-white/15"></span>
+                </div>
+                <span class="font-mono text-[11px] text-slate-400 tracking-wider uppercase"> <--THESE DOTS ARE USELESS </span>
+              </div>
+
+              <!-- Profile Photo -->
+              <div class="relative aspect-[4/4.5] rounded-2xl border border-white/10 bg-[#080a10] overflow-hidden group">
+                <img
+                  src="assets/profile.jpg"
+                  alt="Nihar Kadam"
+                  class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0b0d14]/70 via-transparent to-transparent"></div>
+              </div>
+
+              <!-- Card Footer Metadata -->
+              <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-xs">
+                <div>
+                  <span class="block text-slate-500 font-mono text-[10px] uppercase">Focus</span>
+                  <span class="text-slate-200 font-medium"> I DONT FOCUS </span>
+                </div>
+                <div class="text-right">
+                  <span class="block text-slate-500 font-mono text-[10px] uppercase">Goal</span>
+                  <span class="text-cyan-300 font-medium">GET BETTER SLEEP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smooth Scroll Indicator -->
+      <a href="#about" aria-label="Scroll down to About section" class="group hidden sm:flex flex-col items-center gap-2.5 absolute bottom-8 left-1/2 -translate-x-1/2 text-slate-500 hover:text-slate-200 transition-colors">
+        <span class="font-mono text-[10px] uppercase tracking-[0.25em]">Scroll</span>
+        <div class="w-[1px] h-10 bg-white/15 overflow-hidden relative rounded-full">
+          <div class="w-full h-1/2 bg-gradient-to-b from-transparent via-blue-400 to-violet-400 animate-scroll-line"></div>
+        </div>
+      </a>
+    </section>
+
+    <!-- 2. ABOUT ME SECTION -->
+    <section id="about" class="py-24 sm:py-32 px-5 sm:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+          <!-- Left: Section Heading & Narrative -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.22em] text-blue-400">
+              <span class="w-6 h-[1px] bg-blue-400/60"></span>
+              <span>01 / About</span>
+            </div>
+
+            <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              A Little About Me
+            </h2>
+
+            <div class="space-y-4 text-slate-300 text-base sm:text-lg leading-relaxed">
+              <p>
+                EVEN I DONT KNOW WHO I AM AND WHAT I AM DOING 
+              </p>
+            </div>
+
+            <!-- Philosophy Pills -->
+            <div class="flex flex-wrap gap-2.5 pt-2">
+              <span class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-white/10 bg-white/[0.03] text-slate-300">lazy</span>
+              <span class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-white/10 bg-white/[0.03] text-slate-300">smart work</span>
+              <span class="px-3.5 py-1.5 rounded-full text-xs font-medium border border-white/10 bg-white/[0.03] text-slate-300">work depends on mood</span>
+            </div>
+          </div>
+
+          <!-- Right: Interactive "Right Now" Snapshot Card -->
+          <div class="lg:col-span-5">
+            <div class="bento-card rounded-2xl p-6 sm:p-7 space-y-5">
+              <div class="flex items-center justify-between">
+                <h3 class="font-display text-base font-semibold text-white flex items-center gap-2">
+                  <i data-lucide="sparkles" class="w-4 h-4 text-violet-400"></i>
+                  Current Snapshot
+                </h3>
+                <span class="font-mono text-[11px] text-slate-500">Live Mindset</span>
+              </div>
+
+              <div class="space-y-4">
+                <div class="p-4 rounded-xl bg-white/[0.025] border border-white/[0.06]">
+                  <p class="font-mono text-[11px] uppercase tracking-wider text-blue-400 mb-1.5">Right Now</p>
+                  <p class="text-base text-slate-200">PREPARING FOR JEE</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. CRAFT & CAPABILITIES (BENTO GRID) -->
+    <section id="craft" class="py-20 sm:py-28 px-5 sm:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal mb-8">
+          <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.22em] text-blue-400">
+            <span class="w-6 h-[1px] bg-blue-400/60"></span>
+            <span>02 / Craft &amp; Skills</span>
+          </div>
+        </div>
+
+        <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Skill 1: Video Editing -->
+          <div class="bento-card rounded-2xl p-6 sm:p-7 flex flex-col justify-between gap-5">
+            <div>
+              <div class="w-11 h-11 rounded-xl bg-blue-500/15 border border-blue-400/25 flex items-center justify-center text-blue-400 mb-5">
+                <i data-lucide="film" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-display text-xl font-semibold text-white mb-2">Video Editing</h3>
+              <p class="text-sm text-slate-400 leading-relaxed">
+                I CAN DO BASIC EDITING
+              </p>
+            </div>
+          </div>
+
+          <!-- Skill 2: Playing Games -->
+          <div class="bento-card rounded-2xl p-6 sm:p-7 flex flex-col justify-between gap-5">
+            <div>
+              <div class="w-11 h-11 rounded-xl bg-violet-500/15 border border-violet-400/25 flex items-center justify-center text-violet-400 mb-5">
+                <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-display text-xl font-semibold text-white mb-2">Playing Games</h3>
+              <p class="text-sm text-slate-400 leading-relaxed">
+                EXPLORING COMPETITIVE AND STORY DRIVEN GAMES
+             </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. WORK -->
+    <section id="work" class="py-20 sm:py-28 px-5 sm:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal bento-card rounded-3xl p-8 sm:p-12 space-y-4">
+          <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.22em] text-blue-400">
+            <span class="w-6 h-[1px] bg-blue-400/60"></span>
+            <span>03 / Work</span>
+          </div>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            Work
+          </h2>
+          <p class="font-display text-xl sm:text-2xl font-semibold tracking-wide accent-gradient-text">
+            I AM UNEMPLOYED
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CONNECT WITH ME -->
+    <section id="connect" class="py-24 sm:py-32 px-5 sm:px-8">
+      <div class="max-w-4xl mx-auto">
+        <div class="reveal bento-card rounded-3xl p-7 sm:p-12 overflow-hidden relative">
+          <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-600/15 blur-3xl rounded-full pointer-events-none"></div>
+          <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-violet-600/15 blur-3xl rounded-full pointer-events-none"></div>
+
+          <div class="relative z-10 space-y-6">
+            <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.22em] text-blue-400">
+              <span class="w-6 h-[1px] bg-blue-400/60"></span>
+              <span>04 / Connect</span>
+            </div>
+            <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Connect With Me
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <!-- Gmail Card -->
+              <button
+                id="copy-email-btn"
+                type="button"
+                class="group flex items-center gap-3.5 px-5 py-4 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-blue-400/40 transition-all text-left w-full"
+              >
+                <div class="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center text-blue-400 shrink-0">
+                  <i data-lucide="mail" class="w-5 h-5"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="block text-[11px] font-mono uppercase text-slate-500">Gmail</span>
+                  <span class="block text-sm font-medium text-slate-200 truncate">niharkadam.0311@gmail.com</span>
+                </div>
+                <i data-lucide="copy" class="w-4 h-4 text-slate-500 group-hover:text-blue-400 shrink-0 transition-colors"></i>
+              </button>
+
+              <!-- Instagram Link Card -->
+              <a
+                href="https://www.instagram.com/niharkadam_03"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex items-center gap-3.5 px-5 py-4 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-violet-400/40 transition-all text-left w-full"
+              >
+                <div class="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center text-violet-400 shrink-0">
+                  <i data-lucide="instagram" class="w-5 h-5"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="block text-[11px] font-mono uppercase text-slate-500">Instagram</span>
+                  <span class="block text-sm font-medium text-slate-200 truncate">nihar (@niharkadam_03)</span>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-violet-400 shrink-0 transition-colors"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-white/[0.06] py-8 px-5 sm:px-8">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p class="font-mono">Designed &amp; crafted by <span class="text-slate-300">Nihar Kadam</span></p>
+      <p class="font-mono">Exploring. Creating. Building My Journey.</p>
+    </div>
+  </footer>
+
+  <!-- Quick Jump Command Palette Modal -->
+  <div id="cmd-modal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-24 p-4 bg-black/75 backdrop-blur-md">
+    <div class="w-full max-w-md rounded-2xl border border-white/15 bg-[#0e111a] overflow-hidden shadow-2xl">
+      <div class="flex items-center gap-3 px-4 py-3 border-b border-white/10">
+        <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
+        <input id="cmd-input" type="text" placeholder="Jump to section or action..." class="w-full bg-transparent text-sm text-white placeholder:text-slate-500 focus:outline-none" />
+        <button id="cmd-close-btn" type="button" class="text-xs font-mono text-slate-500 hover:text-white px-2 py-0.5 rounded bg-white/5">ESC</button>
+      </div>
+      <div id="cmd-list" class="p-2 max-h-64 overflow-y-auto space-y-1"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 translate-y-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="flex items-center gap-2.5 px-4 py-3 rounded-xl border border-blue-400/30 bg-[#101420]/95 backdrop-blur-xl text-sm text-white shadow-xl">
+      <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-400"></i>
+      <span id="toast-msg">Done!</span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
